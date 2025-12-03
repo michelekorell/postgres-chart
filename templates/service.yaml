@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "common.fullname" . }}
+  labels:
+    {{- include "common.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: 5432
+      protocol: TCP
+      name: postgres
+  {{- if and (eq .Values.service.type "ClusterIP") .Values.service.headless }}
+  clusterIP: None
+  {{- end }}
+  selector:
+    {{- include "common.selectorLabels" . | nindent 4 }}

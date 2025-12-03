@@ -1,0 +1,42 @@
+# Default values for sigma-pgvector.
+
+nameOverride: ""
+fullnameOverride: ""
+
+image:
+  repository: pgvector/pgvector
+  pullPolicy: IfNotPresent
+  tag: "pg17"
+
+auth:
+  username: admin
+  password: "" # Set this in Rancher UI
+  database: app_db
+
+service:
+  type: ClusterIP
+  port: 5432
+  headless: true
+
+storage:
+  size: 10Gi
+  className: "local-path"
+
+initdbScripts:
+  enable_vector.sql: |
+    CREATE EXTENSION IF NOT EXISTS vector;
+
+ingress:
+  enabled: true
+  
+  # The base domain. The final URL will be: <release-name>.<baseDomain>
+  baseDomain: "db.intranet.sig.lan"
+  
+  tls:
+    enabled: true
+    # Matches your existing ClusterIssuer
+    issuer: "intranet-sig-lan-ca-issuer"
+
+  # Matches the entryPoint you enabled in Traefik
+  entryPoints:
+    - postgres

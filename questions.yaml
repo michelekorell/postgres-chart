@@ -1,0 +1,54 @@
+categories:
+- "Database"
+- "Storage"
+
+questions:
+# Database Configuration
+- variable: auth.database
+  default: "app_db"
+  description: "Name of the database to create"
+  type: string
+  label: "Database Name"
+  group: "Database Settings"
+  required: true
+
+- variable: auth.username
+  default: "admin"
+  description: "Username for the database admin"
+  type: string
+  label: "Username"
+  group: "Database Settings"
+  required: true
+
+- variable: auth.password
+  default: ""
+  description: "Password for the database admin"
+  type: password
+  label: "Password"
+  group: "Database Settings"
+  required: true
+
+# Storage Configuration
+- variable: storage.size
+  default: "10Gi"
+  description: "Size of the persistent volume (e.g. 10Gi, 100Gi)"
+  type: string
+  label: "Volume Size"
+  group: "Storage"
+  required: true
+
+- variable: storage.className
+  default: "local-path"
+  description: "Storage Class Name (use 'local-path' for K3s/Rancher default)"
+  type: storageclass
+  label: "Storage Class"
+  group: "Storage"
+  required: true
+
+# Advanced
+- variable: image.tag
+  default: "pg17"
+  description: "Postgres/PgVector image tag"
+  type: string
+  label: "Image Tag"
+  group: "Advanced Settings"
