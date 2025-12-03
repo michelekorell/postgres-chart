@@ -1,15 +1,16 @@
 categories:
 - "Database"
 - "Storage"
+- "Networking"
 
 questions:
-# Database Configuration
+# --- Database ---
 - variable: auth.database
   default: "app_db"
   description: "Name of the database to create"
   type: string
   label: "Database Name"
-  group: "Database Settings"
+  group: "Database"
   required: true
 
 - variable: auth.username
@@ -17,7 +18,7 @@ questions:
   description: "Username for the database admin"
   type: string
   label: "Username"
-  group: "Database Settings"
+  group: "Database"
   required: true
 
 - variable: auth.password
@@ -25,13 +26,13 @@ questions:
   description: "Password for the database admin"
   type: password
   label: "Password"
-  group: "Database Settings"
+  group: "Database"
   required: true
 
-# Storage Configuration
+# --- Storage ---
 - variable: storage.size
   default: "10Gi"
-  description: "Size of the persistent volume (e.g. 10Gi, 100Gi)"
+  description: "Size of the persistent volume"
   type: string
   label: "Volume Size"
   group: "Storage"
@@ -39,16 +40,40 @@ questions:
 
 - variable: storage.className
   default: "local-path"
-  description: "Storage Class Name (use 'local-path' for K3s/Rancher default)"
+  description: "Storage Class Name"
   type: storageclass
   label: "Storage Class"
   group: "Storage"
   required: true
 
-# Advanced
+# --- Networking ---
+- variable: ingress.enabled
+  default: true
+  description: "Expose DB via Traefik TCP Ingress"
+  type: boolean
+  label: "Enable Ingress"
+  group: "Networking"
+
+- variable: ingress.baseDomain
+  default: "db.intranet.sig.lan"
+  description: "Base Domain (Result: <release-name>.db.intranet.sig.lan)"
+  type: string
+  label: "Base Domain"
+  group: "Networking"
+  show_if: "ingress.enabled=true"
+
+- variable: ingress.tls.issuer
+  default: "intranet-sig-lan-ca-issuer"
+  description: "Cert-Manager ClusterIssuer Name"
+  type: string
+  label: "Cluster Issuer"
+  group: "Networking"
+  show_if: "ingress.enabled=true"
+
+# --- Advanced ---
 - variable: image.tag
   default: "pg17"
   description: "Postgres/PgVector image tag"
   type: string
   label: "Image Tag"
-  group: "Advanced Settings"
+  group: "Advanced"
