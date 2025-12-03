@@ -1,0 +1,21 @@
+{{- if .Values.ingress.enabled -}}
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ include "common.fullname" . }}-cert
+  labels:
+    {{- include "common.labels" . | nindent 4 }}
+spec:
+  # The Secret that Traefik will use
+  secretName: {{ include "common.fullname" . }}-tls
+  
+  # The Dynamic DNS Name (e.g. motorola.db.intranet.sig.lan)
+  dnsNames:
+    - {{ include "common.hostname" . }}
+  
+  # Links to your existing ClusterIssuer
+  issuerRef:
+    name: {{ .Values.ingress.tls.issuer }}
+    kind: ClusterIssuer
+    group: cert-manager.io
+{{- end }}
